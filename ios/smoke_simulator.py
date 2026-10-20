@@ -42,7 +42,12 @@ def simctl(*arguments: str, timeout: int = 45) -> str:
 
 
 def select_runtime(inventory: dict) -> tuple[dict, dict]:
-    """Use a known compatible iPhone device definition from an installed runtime."""
+    """Exercise compatibility on the oldest installed supported runtime.
+
+    Newer simulator runtimes may appear available even when an older selected
+    Xcode cannot reliably boot them. Prefer an ordinary iPhone definition on the
+    oldest available iOS16+ runtime rather than choosing the highest OS number.
+    """
     candidates = []
     for runtime in inventory.get("runtimes", []):
         identifier = runtime.get("identifier", "")
@@ -60,7 +65,8 @@ def select_runtime(inventory: dict) -> tuple[dict, dict]:
     if not candidates:
         raise SmokeError("No installed available iOS 16+ iPhone Simulator definition found. "
                          "Install an iOS runtime in Xcode and create an iPhone simulator first.")
-    _, _, runtime, device = max(candidates, key=lambda item: (item[0], item[1]))
+    _, _, runtime, device = min(candidates, key=lambda item: (
+        item[0], 0 if re.fullmatch(r"iPhone \d+", item[1]) else 1, item[1]))
     return runtime, device
 
 
@@ -107,6 +113,10 @@ def main() -> int:
     cleanup_errors = []
     try:
         inventory = json.loads(simctl("list", "--json"))
+        runtime_names = [f"{item.get('name', 'iOS')} ({item.get('version', '?')})"
+                         for item in inventory.get("runtimes", [])
+                         if ".iOS-" in item.get("identifier", "") and item.get("isAvailable", False)]
+        print("Available iOS runtimes: " + ", ".join(runtime_names), flush=True)
         runtime, template = select_runtime(inventory)
         summary.update(runtime=runtime.get("name", runtime["identifier"]), device=template["name"])
         # A fresh disposable simulator avoids changing or deleting any existing app/data.
@@ -117,8 +127,11 @@ def main() -> int:
         summary["simulator_udid"] = device_id
         print(f"Booting disposable {summary['device']} · {summary['runtime']}", flush=True)
         simctl("boot", device_id, timeout=90)
-        simctl("bootstatus", device_id, "-b", timeout=240)
+        print("Waiting for simulator OS boot to complete (deadline 600s)…", flush=True)
+        simctl("bootstatus", device_id, "-b", timeout=600)
+        print("Simulator booted. Installing the built FieldKit app…", flush=True)
         simctl("install", device_id, str(app), timeout=90)
+        print("Launching FieldKit…", flush=True)
         launch_output = simctl("launch", device_id, bundle, timeout=60)
         summary["launch_output"] = launch_output
         launched = True
@@ -156,7 +169,8 @@ def main() -> int:
             operations.extend([("shutdown", device_id), ("delete", device_id)])
             for operation in operations:
                 try:
-                    simctl(*operation, timeout=30)
+                    print(f"Cleaning up disposable simulator: {operation[0]}", flush=True)
+                    simctl(*operation, timeout=60)
                 except SmokeError as error:
                     cleanup_errors.append(str(error))
         summary["cleanup"] = "passed" if not cleanup_errors else cleanup_errors

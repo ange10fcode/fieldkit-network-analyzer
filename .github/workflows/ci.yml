@@ -126,17 +126,17 @@ jobs:
   ios:
     name: iOS native build and core tests
     runs-on: macos-15-intel
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Test portable Swift core
         run: swift test --package-path ios
       - name: Build iOS Simulator application
         run: xcodebuild -project ios/FieldKit.xcodeproj -scheme FieldKit -sdk iphonesimulator -configuration Release -destination 'generic/platform=iOS Simulator' -derivedDataPath work/ios-derived CODE_SIGNING_ALLOWED=NO build
-      - name: Install and launch on disposable iPhone Simulator
-        run: python3 ios/smoke_simulator.py --app work/ios-derived/Build/Products/Release-iphonesimulator/FieldKit.app --output work/ios-smoke
       - name: Build unsigned device archive
         run: xcodebuild -project ios/FieldKit.xcodeproj -scheme FieldKit -configuration Release -destination 'generic/platform=iOS' -archivePath artifacts/FieldKit-1.0.0-iOS-UNSIGNED.xcarchive CODE_SIGNING_ALLOWED=NO archive
+      - name: Ad-hoc sign Simulator application
+        run: codesign --force --deep --sign - work/ios-derived/Build/Products/Release-iphonesimulator/FieldKit.app
       - name: Package explicit unsigned artifacts
         run: |
           mkdir -p artifacts
@@ -147,3 +147,13 @@ jobs:
           name: ios-unsigned
           path: artifacts/*.zip
           if-no-files-found: error
+      - name: Install and launch on disposable iPhone Simulator
+        run: |
+          python3 ios/smoke_simulator.py --app work/ios-derived/Build/Products/Release-iphonesimulator/FieldKit.app --output work/ios-smoke
+      - name: Retain simulator diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ios-smoke-diagnostics
+          path: work/ios-smoke/
+          if-no-files-found: ignore
