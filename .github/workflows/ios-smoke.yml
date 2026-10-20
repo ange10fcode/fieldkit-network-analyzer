@@ -1,0 +1,50 @@
+name: iOS Simulator smoke on Apple Silicon
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: Build and verify run containing the ios-unsigned artifact
+        required: true
+        type: string
+        default: '39466383613'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  ios-smoke-m1:
+    name: Launch existing Simulator app on Apple Silicon
+    runs-on: macos-15
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Download this repository's existing iOS build
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: ios-unsigned
+          path: work/simulator-artifact
+          repository: ${{ github.repository }}
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.source_run_id }}
+      - name: Extract Simulator application
+        run: |
+          mkdir -p work/simulator-input
+          ditto -x -k work/simulator-artifact/FieldKit-1.0.0-iOS-Simulator.zip work/simulator-input
+          test -d work/simulator-input/FieldKit.app
+      - name: Verify or restore ad-hoc Simulator signature
+        run: |
+          if ! codesign --verify --deep --strict work/simulator-input/FieldKit.app; then
+            codesign --force --deep --sign - work/simulator-input/FieldKit.app
+          fi
+          codesign --verify --deep --strict work/simulator-input/FieldKit.app
+      - name: Install and launch on disposable iPhone Simulator
+        run: python3 ios/smoke_simulator.py --app work/simulator-input/FieldKit.app --output work/ios-smoke-m1
+      - name: Retain Simulator diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ios-smoke-m1
+          path: work/ios-smoke-m1/
+          if-no-files-found: ignore
