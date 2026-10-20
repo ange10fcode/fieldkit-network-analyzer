@@ -228,10 +228,11 @@ private struct NearbyView: View {
                     Button("Set baseline here") { finder.resetBaseline() }
                 }
             }
-            Section("Bluetooth LE signal finder") {
+            Section {
                 ActionButton(finder.scanning ? "Stop scanning" : "Scan nearby", systemImage: finder.scanning ? "stop.circle.fill" : "dot.radiowaves.left.and.right") { finder.scanning ? finder.stop() : finder.start() }
                 Text(finder.status).font(.caption).foregroundStyle(.secondary)
-            } footer: { Text("Signal strength helps compare positions. Walls, body position and interference affect it; it cannot supply reliable meters or a direction arrow. BLE identifiers do not identify matching LAN devices.") }
+            } header: { Text("Bluetooth LE signal finder") }
+            footer: { Text("Signal strength helps compare positions. Walls, body position and interference affect it; it cannot supply reliable meters or a direction arrow. BLE identifiers do not identify matching LAN devices.") }
             Section("\(finder.devices.count) observed devices") {
                 ForEach(finder.devices.sorted(by: { $0.rssi > $1.rssi })) { device in
                     Button { finder.select(device) } label: {
