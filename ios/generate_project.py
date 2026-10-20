@@ -45,10 +45,10 @@ def project():
     objects = []
     def add(name,body): objects.append(f'\t\t{ident(name)} = {{ {body} }};')
     sources = sorted(p.relative_to(ROOT).as_posix() for p in (ROOT/'FieldKit').glob('*.swift')) + ['Sources/FieldKitCore/Core.swift']
-    resources = ['FieldKit/Assets.xcassets','FieldKit/PrivacyInfo.xcprivacy']
+    resources = ['FieldKit/Assets.xcassets','FieldKit/PrivacyInfo.xcprivacy','FieldKit/LICENSE.txt']
     file_ids = []
     for path in sources+resources+['FieldKit/Info.plist','FieldKit/FieldKit.entitlements']:
-        kind = 'sourcecode.swift' if path.endswith('.swift') else 'folder.assetcatalog' if path.endswith('.xcassets') else 'text.plist.xml'
+        kind = 'sourcecode.swift' if path.endswith('.swift') else 'folder.assetcatalog' if path.endswith('.xcassets') else 'text' if path.endswith('.txt') else 'text.plist.xml'
         add('file:'+path,f'isa = PBXFileReference; lastKnownFileType = {kind}; path = {quoted(path)}; sourceTree = SOURCE_ROOT;')
         file_ids.append(ident('file:'+path))
         if path in sources+resources:

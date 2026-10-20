@@ -14,7 +14,19 @@ xcodebuild -project ios/FieldKit.xcodeproj -scheme FieldKit \
   CODE_SIGNING_ALLOWED=NO build
 ```
 
+After building with `-derivedDataPath work/ios-derived`, run a real Simulator launch smoke check:
+
+```sh
+python3 ios/smoke_simulator.py \
+  --app work/ios-derived/Build/Products/Release-iphonesimulator/FieldKit.app \
+  --output work/ios-smoke
+```
+
+The script finds an existing installed iOS 16+ runtime and compatible iPhone definition, creates a disposable simulator, boots it, installs and launches the built app, verifies the returned app process survives eight seconds, and captures `launch.png` plus `summary.json`. It then terminates the app, shuts down and deletes only its own disposable simulator. All subprocess calls have bounded timeouts. It downloads no runtime and modifies no existing simulator. A failed install, launch, survival check, screenshot or cleanup exits unsuccessfully. This verifies startup only; it does not test radio hardware, ranging or every screen.
+
 The committed project and opaque 1024 px app icon are deterministic. Regenerate them with `python3 ios/generate_project.py`; this uses only the Python standard library. The original icon is in `artwork/AppIcon.svg`. UI symbols use SF Symbols.
+
+The repository's MIT license is included verbatim in the app bundle as `LICENSE.txt` and is available in Settings → App license.
 
 For a physical iPhone, set a unique bundle identifier and your Apple developer team in Signing & Capabilities, then use Xcode Run or Product → Archive. A simulator `.app` cannot be installed on a physical iPhone. An installable signed IPA, TestFlight upload or App Store distribution needs an Apple developer account, certificates and provisioning. No Apple credentials or provisioning profiles are included.
 

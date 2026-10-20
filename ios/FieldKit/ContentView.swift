@@ -328,9 +328,18 @@ private struct SettingsView: View {
             Section("FieldKit 1.0.0") {
                 Text("Local diagnostics without an account. There are no analytics or background scans. Registration lookups contact public RDAP services only when requested.").font(.footnote)
                 Text("iOS 16 or later. Wi-Fi surveys, cellular signal strength, raw packet capture, ARP inventory and traceroute are not available through the public APIs used by this release.").font(.footnote).foregroundStyle(.secondary)
+                NavigationLink("App license") {
+                    ScrollView {
+                        Text(appLicense).font(.system(.footnote, design: .monospaced)).frame(maxWidth: .infinity, alignment: .leading).padding().textSelection(.enabled)
+                    }.navigationTitle("MIT license")
+                }
             }
         }.navigationTitle("Settings")
         .confirmationDialog("Delete saved LAN results, signal charts and Bluetooth observations? History remains available.", isPresented: $confirmClear, titleVisibility: .visible) { Button("Delete saved results", role: .destructive) { model.clearRetained(); finder.clear() } }
+    }
+    private var appLicense: String {
+        guard let url = Bundle.main.url(forResource: "LICENSE", withExtension: "txt"), let text = try? String(contentsOf: url, encoding: .utf8) else { return "License could not be loaded." }
+        return text
     }
 }
 

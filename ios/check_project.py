@@ -31,4 +31,6 @@ assert png[:8] == b'\x89PNG\r\n\x1a\n'
 width,height,depth,color = struct.unpack('!IIBB',png[16:26])
 assert (width,height,depth,color) == (1024,1024,8,2), 'App icon must be opaque 1024px RGB'
 assert (root/'FieldKit.xcodeproj/xcshareddata/xcschemes/FieldKit.xcscheme').exists()
+assert (root/'FieldKit/LICENSE.txt').read_bytes() == (root.parent/'LICENSE').read_bytes(), 'Bundled app license must match the repository license'
+assert 'FieldKit/LICENSE.txt' in project, 'App license omitted from Xcode resources'
 print(f'iOS static project checks passed: {len(definitions)} objects, all sources/resources, privacy/permission keys, scheme, opaque icon.')

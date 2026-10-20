@@ -16,6 +16,10 @@ def require(condition: bool, message: str) -> None:
 
 require((ROOT / "VERSION").read_text().strip() == VERSION, "VERSION differs from 1.0.0")
 require((ROOT / "LICENSE").read_text().startswith("MIT License"), "MIT license missing")
+require((ROOT / "android/app/src/main/assets/licenses/fieldkit-mit.txt").read_text() == (ROOT / "LICENSE").read_text(),
+        "Android app must bundle its own MIT license")
+require((ROOT / "ios/FieldKit/LICENSE.txt").read_text() == (ROOT / "LICENSE").read_text(),
+        "iOS app must bundle its own MIT license")
 manifest = ET.parse(ROOT / "android/app/src/main/AndroidManifest.xml").getroot()
 ns = "{http://schemas.android.com/apk/res/android}"
 require(manifest.get(ns + "versionName") == VERSION, "Android public version mismatch")

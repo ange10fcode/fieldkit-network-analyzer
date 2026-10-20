@@ -54,3 +54,7 @@ docs/        Building, signing, validation and release instructions
 See [BUILDING](docs/BUILDING.md), [VALIDATION](docs/VALIDATION.md), [CONTRIBUTING](CONTRIBUTING.md) and [RELEASING](docs/RELEASING.md). CI compiles each platform and runs parser, loopback, persistence and UI checks. Real-phone radio and UWB checks remain separate requirements.
 
 FieldKit is an independent project. Its name, original artwork and implementation do not imply affiliation with other network analyzer or tracking products.
+
+Desktop LAN view with explicitly labeled loopback preview data:
+
+![FieldKit desktop LAN view](desktop/screenshots/lan-light.png)

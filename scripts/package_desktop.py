@@ -15,6 +15,11 @@ args.output.mkdir(parents=True, exist_ok=True)
 executable = publish / ("FieldKit.exe" if args.rid == "win-x64" else "FieldKit")
 if not executable.is_file():
     raise SystemExit("Publish directory is missing its application executable")
+for required in ("LICENSE", "README.md", "THIRD-PARTY-NOTICES.md"):
+    if not (publish / required).is_file():
+        raise SystemExit("Publish directory is missing " + required)
+if not (publish / "licenses").is_dir():
+    raise SystemExit("Publish directory is missing dependency license texts")
 files = sorted(p for p in publish.rglob("*") if p.is_file())
 if args.rid == "win-x64":
     artifact = args.output / "FieldKit-1.0.0-Windows-x64.zip"

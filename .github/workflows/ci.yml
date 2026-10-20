@@ -100,6 +100,19 @@ jobs:
         run: xvfb-run -a dotnet run --project desktop/FieldKit.Desktop -c Release --no-build -- --smoke-ui --data-dir work/desktop-smoke
       - name: Publish self-contained desktop
         run: dotnet publish desktop/FieldKit.Desktop/FieldKit.Desktop.csproj -c Release -r ${{ matrix.rid }} --self-contained true -o artifacts/publish/${{ matrix.rid }}
+      - name: Verify published Windows executable
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          & ./artifacts/publish/win-x64/FieldKit.exe --smoke-test
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & ./artifacts/publish/win-x64/FieldKit.exe --smoke-ui --data-dir work/published-smoke
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Verify published Linux executable
+        if: runner.os == 'Linux'
+        run: |
+          ./artifacts/publish/linux-x64/FieldKit --smoke-test
+          xvfb-run -a ./artifacts/publish/linux-x64/FieldKit --smoke-ui --data-dir work/published-smoke
       - name: Package portable desktop
         run: python scripts/package_desktop.py ${{ matrix.rid }} artifacts/publish/${{ matrix.rid }} artifacts
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -112,7 +125,7 @@ jobs:
 
   ios:
     name: iOS native build and core tests
-    runs-on: macos-15
+    runs-on: macos-15-intel
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -120,6 +133,8 @@ jobs:
         run: swift test --package-path ios
       - name: Build iOS Simulator application
         run: xcodebuild -project ios/FieldKit.xcodeproj -scheme FieldKit -sdk iphonesimulator -configuration Release -destination 'generic/platform=iOS Simulator' -derivedDataPath work/ios-derived CODE_SIGNING_ALLOWED=NO build
+      - name: Install and launch on disposable iPhone Simulator
+        run: python3 ios/smoke_simulator.py --app work/ios-derived/Build/Products/Release-iphonesimulator/FieldKit.app --output work/ios-smoke
       - name: Build unsigned device archive
         run: xcodebuild -project ios/FieldKit.xcodeproj -scheme FieldKit -configuration Release -destination 'generic/platform=iOS' -archivePath artifacts/FieldKit-1.0.0-iOS-UNSIGNED.xcarchive CODE_SIGNING_ALLOWED=NO archive
       - name: Package explicit unsigned artifacts

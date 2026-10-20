@@ -9,7 +9,7 @@ Compiler, automated-test and physical-device checks prove different things. Succ
 - iOS: portable Swift core tests, Simulator compilation and unsigned device archive on macOS CI.
 - Public source: version, dependency pinning and private-material checks through `scripts/verify_release.py`.
 
-Actions results record verification for each commit. Local Windows checks covered desktop startup/persistence and Android packaging. Earlier API 26/API 34 emulator checks covered Android navigation, retained results and unsupported optional-radio paths. No physical iPhone or two-peer UWB setup was available during preparation.
+Actions results record verification for each commit. Local Windows checks covered desktop startup/persistence and Android packaging. The signed 1.0.0/code7 APK fresh-installed and launched on API 26/API 34 emulators: navigation, separate network suggestions, retained themes and unsupported precision-finder gates passed with empty crash buffers. The first CI APK was byte-identical to that locally tested build. No physical iPhone or two-peer UWB setup was available during preparation.
 
 ## Real-device checklist
 

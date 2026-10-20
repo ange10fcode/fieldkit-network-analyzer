@@ -31,6 +31,8 @@
     <PackageReference Include="Avalonia.BuildServices" Version="[11.3.2]" ExcludeAssets="all" PrivateAssets="all" />
     <ProjectReference Include="../FieldKit.Core/FieldKit.Core.csproj" />
     <AvaloniaResource Include="Assets/**" />
+    <Content Include="../../LICENSE" Link="LICENSE" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="../README.md" Link="README.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <Content Include="../THIRD-PARTY-NOTICES.md" Link="THIRD-PARTY-NOTICES.md" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="../licenses/**" Link="licenses/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>

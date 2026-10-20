@@ -1,5 +1,8 @@
 FieldKit Analyzer 1.0.0 — third-party notices
 
+FieldKit itself is MIT licensed. Its complete copyright and permission notice is
+included at licenses/fieldkit-mit.txt and is available through License texts.
+
 The runtime dependency inventory below is taken from app/gradle.lockfile. License
 declarations were inspected in the resolved upstream Maven POMs, including Guava's
 parent POMs. A locked metadata/BOM or empty annotation artifact does not imply that
