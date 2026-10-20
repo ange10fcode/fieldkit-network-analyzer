@@ -1,0 +1,64 @@
+name: Report verified iOS startup to release draft
+
+on:
+  workflow_run:
+    workflows: [iOS Simulator smoke on Apple Silicon]
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'workflow_dispatch' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: windows-2022
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      # No checkout or downloaded code runs with the write token.
+      - name: Update only the matching unpublished 1.0 draft
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $event = Get-Content -LiteralPath $env:GITHUB_EVENT_PATH -Raw | ConvertFrom-Json
+          $completed = $event.workflow_run
+          $headers = @{Authorization="Bearer $env:GH_TOKEN";Accept='application/vnd.github+json';'X-GitHub-Api-Version'='2022-11-28'}
+          try {
+            $api = "https://api.github.com/repos/$env:GITHUB_REPOSITORY"
+            # Release-specific dispatch recorded by the maintainer: this immutable
+            # smoke run was launched with source_run_id=39466383613. Never infer
+            # artifact provenance from the smoke workflow's head_sha alone.
+            if ([long]$completed.id -ne 39469452553 -or $completed.head_sha -ne '02868d734d8df3565470103bf97f55560bededbc') {
+              Write-Output 'Not the approved 1.0 artifact check; manual review required.'; exit 0
+            }
+            $build = Invoke-RestMethod -Uri "$api/actions/runs/39466383613" -Headers $headers
+            if ($build.repository.full_name -ne $env:GITHUB_REPOSITORY -or $build.head_branch -ne 'main' -or $build.path -ne '.github/workflows/ci.yml') {
+              throw 'Approved artifact build provenance does not match this repository.'
+            }
+            $releases = Invoke-RestMethod -Uri "$api/releases?per_page=100" -Headers $headers
+            $draft = @($releases | Where-Object { $_.tag_name -eq 'v1.0.0' -and $_.draft }) | Select-Object -First 1
+            if (-not $draft) { Write-Output 'No unpublished 1.0 draft; nothing changed.'; exit 0 }
+            if ($draft.target_commitish -notmatch '^[0-9a-f]{40}$') { Write-Output 'Draft needs an immutable source commit; manual review required.'; exit 0 }
+            $from = $build.head_sha
+            $target = $draft.target_commitish
+            $builtTree = Invoke-RestMethod -Uri "$api/git/trees/$from" -Headers $headers
+            $releaseTree = Invoke-RestMethod -Uri "$api/git/trees/$target" -Headers $headers
+            foreach ($path in @('ios', 'LICENSE', 'VERSION')) {
+              $built = @($builtTree.tree | Where-Object path -eq $path)
+              $released = @($releaseTree.tree | Where-Object path -eq $path)
+              if ($built.Count -ne 1 -or $released.Count -ne 1 -or $built[0].sha -ne $released[0].sha -or $built[0].mode -ne $released[0].mode) {
+                Write-Output "Release input $path differs from the actual artifact build; manual review required."; exit 0
+              }
+            }
+            $body = [string]$draft.body
+            if (-not $body.Contains('iOS startup is not yet verified.')) { Write-Output 'No pending startup note; nothing changed.'; exit 0 }
+            $replacement = "Simulator installation and launch passed on Apple Silicon: $($completed.html_url). This verifies startup, not physical-phone networking or BLE/UWB behavior. The device archive still needs Apple signing before iPhone installation."
+            $body = [regex]::Replace($body, '(?s)iOS startup is not yet verified\..*\z', $replacement)
+            $request = @{body=$body} | ConvertTo-Json -Compress
+            $null = Invoke-RestMethod -Uri "$api/releases/$($draft.id)" -Method Patch -Headers $headers -ContentType 'application/json' -Body $request
+            Write-Output "Updated startup verification in draft $($draft.html_url); publication status unchanged."
+          } finally { $headers.Clear() }
