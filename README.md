@@ -25,7 +25,7 @@ The public Android release uses a new signing identity. Export wanted results fr
 | Suggested targets, manual IPv4 LAN ranges, TCP ports | Yes | Yes | Yes |
 | Device names and services | PTR, mDNS/Bonjour, SSDP where published | PTR and SSDP/UPnP where published | PTR and Bonjour where published |
 | IPv4/IPv6 inventory, observed tags and legend | Yes | Yes | Yes |
-| Ping / connection timing | ICMP and labeled TCP fallback | ICMP and labeled TCP fallback | TCP connection timing |
+| Ping / connection timing | ICMP and labeled TCP fallback | ICMP | TCP connection timing |
 | DNS and registration information | Yes | Yes | System DNS and RDAP |
 | Traceroute | Within Android restrictions | OS `tracert` / `traceroute` | Unavailable in this release |
 | Wake-on-LAN | Yes | Yes | UDP send; broadcast may need an Apple entitlement |
