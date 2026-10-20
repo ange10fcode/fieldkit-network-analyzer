@@ -1,6 +1,6 @@
-# FieldKit 1.5 third-party notices
+# FieldKit 1.0.0 third-party notices
 
-Version 1.5 uses the published `androidx.core.uwb:uwb-rxjava3:1.0.0` AndroidX UWB implementation and its transitive runtime dependencies. The exact resolved set is pinned in [app/gradle.lockfile](app/gradle.lockfile). This record was prepared by inspecting those artifacts' resolved upstream Maven POM license declarations, Guava parent POM declarations and license/notice files supplied in their published JARs/AARs. Library source has not been modified for this build.
+Version 1.0.0 uses the published `androidx.core.uwb:uwb-rxjava3:1.0.0` AndroidX UWB implementation and its transitive runtime dependencies. The exact resolved set is pinned in [app/gradle.lockfile](app/gradle.lockfile). This record was prepared by inspecting those artifacts' resolved upstream Maven POM license declarations, Guava parent POM declarations and license/notice files supplied in their published JARs/AARs. Library source has not been modified for this build.
 
 The readable inventory is also packaged in the APK as [app/src/main/assets/third_party_notices.txt](app/src/main/assets/third_party_notices.txt). Full texts and the supplied upstream component notices are retained under [app/src/main/assets/licenses](app/src/main/assets/licenses). Settings provides the bundled notice inventory and license texts. A locked metadata/BOM or empty annotation artifact does not necessarily contribute executable classes.
 

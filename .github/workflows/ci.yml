@@ -31,7 +31,9 @@ jobs:
         run: python3 scripts/test_android.py
       - name: Install Android SDK components
         run: |
-          sdkmanager "platforms;android-36" "build-tools;36.0.0"
+          sdk_manager="$(find "$ANDROID_HOME/cmdline-tools" -path '*/bin/sdkmanager' -type f -print -quit)"
+          test -n "$sdk_manager"
+          "$sdk_manager" "platforms;android-36" "build-tools;36.0.0"
       - name: Build unsigned verification APK
         working-directory: android
         run: bash gradlew --no-daemon --console=plain :app:assembleRelease -PfieldkitUnsigned=true
