@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>FieldKit</AssemblyName>
+    <RootNamespace>FieldKit.Desktop</RootNamespace>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Product>FieldKit</Product>
+    <Description>Practical network diagnostics for everyday use.</Description>
+    <Company>FieldKit contributors</Company>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <PublishTrimmed>false</PublishTrimmed>
+    <PublishSingleFile>false</PublishSingleFile>
+    <DebugType>embedded</DebugType>
+    <Deterministic>true</Deterministic>
+    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
+    <ApplicationIcon>Assets/fieldkit.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="[11.3.22]" />
+    <PackageReference Include="Avalonia.Desktop" Version="[11.3.22]" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="[11.3.22]" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="[11.3.22]" />
+    <PackageReference Include="Avalonia.BuildServices" Version="[11.3.2]" ExcludeAssets="all" PrivateAssets="all" />
+    <ProjectReference Include="../FieldKit.Core/FieldKit.Core.csproj" />
+    <AvaloniaResource Include="Assets/**" />
+    <Content Include="../THIRD-PARTY-NOTICES.md" Link="THIRD-PARTY-NOTICES.md" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../licenses/**" Link="licenses/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,42 @@
+# Build products and local dependency caches
+**/bin/
+**/obj/
+**/build/
+**/.gradle/
+**/.build/
+**/DerivedData/
+**/xcuserdata/
+**/.swiftpm/
+**/node_modules/
+work/
+artifacts/
+dist/
+**/local.properties
+**/.DS_Store
+**/*.user
+**/*.suo
+
+# Signing material must never enter the public repository
+**/*.jks
+**/*.keystore
+**/*.p12
+**/*.pfx
+**/*.mobileprovision
+**/*.cer
+**/*.pem
+**/*.key
+.env
+.env.*
+!.env.example
+**/signing-private/
+
+# Release binaries belong in GitHub Releases
+*.apk
+*.aab
+*.ipa
+*.zip
+*.tar.gz
+*.exe
+*.msi
+*.deb
+*.AppImage

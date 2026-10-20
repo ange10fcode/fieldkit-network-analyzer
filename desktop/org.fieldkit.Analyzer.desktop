@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=FieldKit
+Comment=Practical network diagnostics
+Exec=FieldKit
+Icon=fieldkit
+Terminal=false
+Categories=Network;System;
+StartupWMClass=FieldKit

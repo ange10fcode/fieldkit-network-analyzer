@@ -1,0 +1,47 @@
+# This is a Gradle generated file for dependency locking.
+# Manual edits can break the build and are not advised.
+# This file is expected to be part of source control.
+androidx.activity:activity:1.0.0=releaseRuntimeClasspath
+androidx.annotation:annotation-jvm:1.8.1=releaseCompileClasspath,releaseRuntimeClasspath
+androidx.annotation:annotation:1.8.1=releaseCompileClasspath,releaseRuntimeClasspath
+androidx.arch.core:core-common:2.1.0=releaseCompileClasspath,releaseRuntimeClasspath
+androidx.arch.core:core-runtime:2.0.0=releaseRuntimeClasspath
+androidx.collection:collection:1.1.0=releaseCompileClasspath,releaseRuntimeClasspath
+androidx.core.uwb:uwb-rxjava3:1.0.0=releaseCompileClasspath,releaseRuntimeClasspath
+androidx.core.uwb:uwb:1.0.0=releaseCompileClasspath,releaseRuntimeClasspath
+androidx.core:core-ktx:1.2.0=releaseCompileClasspath,releaseRuntimeClasspath
+androidx.core:core:1.2.0=releaseCompileClasspath,releaseRuntimeClasspath
+androidx.customview:customview:1.0.0=releaseRuntimeClasspath
+androidx.fragment:fragment:1.1.0=releaseRuntimeClasspath
+androidx.lifecycle:lifecycle-common:2.1.0=releaseCompileClasspath,releaseRuntimeClasspath
+androidx.lifecycle:lifecycle-livedata-core:2.0.0=releaseRuntimeClasspath
+androidx.lifecycle:lifecycle-livedata:2.0.0=releaseRuntimeClasspath
+androidx.lifecycle:lifecycle-runtime:2.1.0=releaseCompileClasspath,releaseRuntimeClasspath
+androidx.lifecycle:lifecycle-viewmodel:2.1.0=releaseRuntimeClasspath
+androidx.loader:loader:1.0.0=releaseRuntimeClasspath
+androidx.savedstate:savedstate:1.0.0=releaseRuntimeClasspath
+androidx.versionedparcelable:versionedparcelable:1.1.0=releaseCompileClasspath,releaseRuntimeClasspath
+androidx.viewpager:viewpager:1.0.0=releaseRuntimeClasspath
+com.google.android.gms:play-services-base:18.6.0=releaseRuntimeClasspath
+com.google.android.gms:play-services-basement:18.6.0=releaseRuntimeClasspath
+com.google.android.gms:play-services-nearby:19.2.0=releaseRuntimeClasspath
+com.google.android.gms:play-services-tasks:18.2.1=releaseRuntimeClasspath
+com.google.code.findbugs:jsr305:3.0.2=releaseRuntimeClasspath
+com.google.errorprone:error_prone_annotations:2.18.0=releaseRuntimeClasspath
+com.google.guava:failureaccess:1.0.1=releaseRuntimeClasspath
+com.google.guava:guava:32.0.1-android=releaseRuntimeClasspath
+com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava=releaseRuntimeClasspath
+com.google.j2objc:j2objc-annotations:2.8=releaseRuntimeClasspath
+io.reactivex.rxjava3:rxjava:3.0.2=releaseCompileClasspath,releaseRuntimeClasspath
+org.checkerframework:checker-qual:3.33.0=releaseRuntimeClasspath
+org.jetbrains.kotlin:kotlin-stdlib:2.1.20=releaseCompileClasspath,releaseRuntimeClasspath
+org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0=releaseCompileClasspath,releaseRuntimeClasspath
+org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.9.0=releaseCompileClasspath,releaseRuntimeClasspath
+org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0=releaseCompileClasspath,releaseRuntimeClasspath
+org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0=releaseCompileClasspath,releaseRuntimeClasspath
+org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.9.0=releaseRuntimeClasspath
+org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.9.0=releaseCompileClasspath,releaseRuntimeClasspath
+org.jetbrains.kotlinx:kotlinx-coroutines-rx3:1.9.0=releaseCompileClasspath,releaseRuntimeClasspath
+org.jetbrains:annotations:23.0.0=releaseCompileClasspath,releaseRuntimeClasspath
+org.reactivestreams:reactive-streams:1.0.3=releaseCompileClasspath,releaseRuntimeClasspath
+empty=androidApis,lintChecks,releaseAnnotationProcessorClasspath,releaseReverseMetadataValues

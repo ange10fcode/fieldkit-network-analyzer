@@ -1,0 +1,18 @@
+<resources>
+    <style name="AppTheme" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">#1766CB</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">#F4F7F8</item>
+        <item name="android:statusBarColor">#F4F7F8</item>
+        <item name="android:windowActionModeOverlay">true</item>
+    </style>
+    <style name="FkBlueLight" parent="android:style/Theme.Material.Light.NoActionBar"><item name="android:colorAccent">#1766CB</item></style>
+    <style name="FkBlueDark" parent="android:style/Theme.Material.NoActionBar"><item name="android:colorAccent">#8AB4F8</item></style>
+    <style name="FkTealLight" parent="android:style/Theme.Material.Light.NoActionBar"><item name="android:colorAccent">#007F70</item></style>
+    <style name="FkTealDark" parent="android:style/Theme.Material.NoActionBar"><item name="android:colorAccent">#53D6BD</item></style>
+    <style name="FkAmberLight" parent="android:style/Theme.Material.Light.NoActionBar"><item name="android:colorAccent">#8C5700</item></style>
+    <style name="FkAmberDark" parent="android:style/Theme.Material.NoActionBar"><item name="android:colorAccent">#FFC15A</item></style>
+    <style name="FkVioletLight" parent="android:style/Theme.Material.Light.NoActionBar"><item name="android:colorAccent">#7040B5</item></style>
+    <style name="FkVioletDark" parent="android:style/Theme.Material.NoActionBar"><item name="android:colorAccent">#C4A5FF</item></style>
+</resources>

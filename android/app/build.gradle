@@ -1,0 +1,40 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'com.fieldkit.analyzer'
+    compileSdk 36
+    buildToolsVersion '36.0.0'
+    defaultConfig {
+        applicationId 'com.fieldkit.analyzer'
+        minSdk 26
+        targetSdk 36
+        // Keep upgrades monotonic after the private 1.x prototypes.
+        versionCode 7
+        versionName '1.0.0'
+    }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_1_8; targetCompatibility JavaVersion.VERSION_1_8 }
+    signingConfigs {
+        releasePrivate {
+            def keystorePath = System.getenv('FIELDKIT_KEYSTORE_PATH')
+            if (keystorePath) storeFile file(keystorePath)
+            storePassword System.getenv('FIELDKIT_KEYSTORE_PASSWORD')
+            keyAlias System.getenv('FIELDKIT_KEY_ALIAS')
+            keyPassword System.getenv('FIELDKIT_KEY_PASSWORD')
+            enableV2Signing true
+            enableV3Signing true
+            enableV4Signing false
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            if (!project.hasProperty('fieldkitUnsigned') && System.getenv('FIELDKIT_KEYSTORE_PATH')) {
+                signingConfig signingConfigs.releasePrivate
+            }
+        }
+    }
+}
+dependencies {
+    implementation 'androidx.core.uwb:uwb-rxjava3:1.0.0'
+}
+dependencyLocking { lockAllConfigurations() }
