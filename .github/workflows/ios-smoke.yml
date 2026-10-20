@@ -8,6 +8,14 @@ on:
         required: true
         type: string
         default: '39466383613'
+      runner:
+        description: Apple Silicon macOS runner
+        required: false
+        type: choice
+        options:
+          - macos-26
+          - macos-15
+        default: macos-26
 
 permissions:
   contents: read
@@ -16,7 +24,7 @@ permissions:
 jobs:
   ios-smoke-m1:
     name: Launch existing Simulator app on Apple Silicon
-    runs-on: macos-15
+    runs-on: ${{ inputs.runner }}
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
